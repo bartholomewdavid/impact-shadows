@@ -15,9 +15,15 @@ EntityTorch = ig.Entity.extend({
     checkAgainst: ig.Entity.TYPE.BOTH,
     lightSize: 128,
     collides: ig.Entity.COLLIDES.FIXED,
+    
+    currentAnimString: null,
+    shadowSheet: new ig.AnimationSheet( 'media/torchshadow.png', 16, 16),
+    shadowAnims: [],
+    currentShadowAnim: null,
 
     init: function( x, y, settings ) {
         this.addAnim( 'idle', 0.1, [0,1,2,1] );
+        this.shadowAnims['idle'] = new ig.Animation(this.shadowSheet, 0.1, [0,1,2,1] );
         this.parent( x, y, settings );
         
         if( !ig.global.wm ){
@@ -30,13 +36,37 @@ EntityTorch = ig.Entity.extend({
                         x: this.lightSize, 
                         y: this.lightSize
                     },
-                    lightSize: this.lightSize
+                    lightSize: this.lightSize,
+                    self: this
                 })
         }
     },
 
     update: function() {
+        this.currentShadowAnim = this.shadowAnims['idle']
 		this.parent();
+    },
+    
+    drawShadow: function(shadowAngle, shadowStrength) {
+        shadowStrength = shadowStrength || .25
+        
+        if (this.currentShadowAnim) {
+            this.currentShadowAnim.tile = this.currentAnim.tile
+            
+            this.currentShadowAnim.flip.x = this.xFlip
+            if (shadowAngle > 1.57) {
+                this.currentShadowAnim.flip.x = this.currentShadowAnim.flip.x
+            }
+          
+            var xDraw = this.pos.x - this.offset.x - ig.game.screen.x
+            var yDraw = this.pos.y - this.offset.y - ig.game.screen.y
+            
+            this.currentShadowAnim.alpha = shadowStrength
+            this.currentShadowAnim.angle = shadowAngle
+            this.currentShadowAnim.pivot.x = 8
+            this.currentShadowAnim.pivot.y = 16
+            this.currentShadowAnim.draw(xDraw, yDraw)
+        }
     },
 });
 
@@ -77,7 +107,7 @@ EntityTorchSensor = ig.Entity.extend({
     },
     
     check: function(other) {
-        if (other.drawShadow !== undefined) {
+        if (other.drawShadow !== undefined && other != this.self) {
             var shadowData = this.calculateShadow(
                 other,
                 {

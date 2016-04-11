@@ -5,33 +5,33 @@ LevelArena=/*JSON[*/{
 	"entities": [
 		{
 			"type": "EntityTorch",
-			"x": 188,
-			"y": 0
+			"x": 68,
+			"y": 124
 		},
 		{
 			"type": "EntityTorch",
-			"x": 156,
-			"y": 0
+			"x": 68,
+			"y": 224
 		},
 		{
 			"type": "EntityTorch",
-			"x": 172,
-			"y": 0
+			"x": 148,
+			"y": 84
 		},
 		{
 			"type": "EntityTorch",
-			"x": 204,
-			"y": 0
+			"x": 220,
+			"y": 120
 		},
 		{
 			"type": "EntityTorch",
-			"x": 140,
-			"y": 0
+			"x": 224,
+			"y": 220
 		},
 		{
 			"type": "EntityGladiator",
-			"x": 188,
-			"y": 172
+			"x": 152,
+			"y": 176
 		}
 	],
 	"layer": [
